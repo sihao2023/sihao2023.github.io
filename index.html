@@ -2,24 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Trae Project</title>
-
-    <script>
-(function(){
-  try{
-    var base='/dragon-boat-game';
-    var origGetter=Object.getOwnPropertyDescriptor(Location.prototype,'pathname').get;
-    Object.defineProperty(window.location,'pathname',{get:function(){var p=origGetter.call(this);if(p.startsWith(base))return p.substring(base.length)||'/';return p;},configurable:true});
-  }catch(e){}
-})();
-</script><script type="module" crossorigin src="/dragon-boat-game/assets/index-BRauvVvc.js"></script>
-    <link rel="stylesheet" crossorigin href="/dragon-boat-game/assets/index-C0mF6DzO.css">
+    <title>My Trae Project</title>
+    <script type="module" crossorigin src="/assets/index-DZXDFKei.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D2EQiril.css">
   </head>
   <body>
-    <div id="root"></div>
-
+    <div id="root"></div>
   
           <script>
             (function() {
@@ -98,7 +88,7 @@
   visibility: visible !important;
 }
 
-/* 鍦ㄧЩ鍔ㄧ璁惧涓婂缁堟樉绀哄彇娑堟寜閽?*/
+/* 在移动端设备上始终显示取消按钮 */
 @media (hover: none) and (pointer: coarse) {
   .trae-badge-cancel {
     opacity: 1 !important;
@@ -154,7 +144,7 @@
 </svg>`;
               
               
-          // 涓婚閫夋嫨鍑芥暟 (澶嶇敤鑷?theme.ts)
+          // 主题选择函数 (复用自 theme.ts)
           function getLuminance(r, g, b) {
             return 0.299 * r + 0.587 * g + 0.114 * b;
           }
@@ -266,21 +256,21 @@
           }
         
               
-              // 娉ㄥ叆鏍峰紡
+              // 注入样式
               const style = document.createElement('style');
               style.id = 'trae-badge-plugin-styles';
               style.textContent = css;
               document.head.appendChild(style);
               
-              // 鍒涘缓 Badge 鍑芥暟
+              // 创建 Badge 函数
               function createBadge() {
-                // 绉婚櫎宸插瓨鍦ㄧ殑 badge
+                // 移除已存在的 badge
                 const existingBadge = document.getElementById('trae-badge-plugin');
                 if (existingBadge) {
                   existingBadge.remove();
                 }
                 
-                // 纭畾涓婚
+                // 确定主题
                 let variant = 'dark';
                 if (true) {
                   variant = autoSelectTheme('body');
@@ -301,7 +291,7 @@
                   <div class="trae-badge-cancel">${cancelIcon}</div>
                 `;
                 
-                // 娣诲姞鐐瑰嚮浜嬩欢
+                // 添加点击事件
                 
                 badge.style.cursor = 'pointer';
                 badge.addEventListener('click', (e) => {
@@ -310,7 +300,7 @@
                 });
                 
                 
-                // 娣诲姞鍙栨秷鎸夐挳浜嬩欢
+                // 添加取消按钮事件
                 const cancelButton = badge.querySelector('.trae-badge-cancel');
                 if (cancelButton) {
                   cancelButton.addEventListener('click', (e) => {
@@ -323,16 +313,18 @@
                 return badge;
               }
               
-              // 鍒濆鍒涘缓 badge
-              // 绛夊緟 React 缁勪欢娓叉煋瀹屾垚鍚庡啀鍒涘缓 badge
+              // 初始创建 badge
+              // 等待 React 组件渲染完成后再创建 badge
               function initBadge() {
-                // 浣跨敤 requestAnimationFrame 绛夊緟娓叉煋瀹屾垚
+                // 使用 requestAnimationFrame 等待渲染完成
                 requestAnimationFrame(() => {
-                  // 鍐嶆妫€鏌ョ洰鏍囧厓绱犳槸鍚﹀瓨鍦?                  const targetElement = document.querySelector('body');
+                  // 再次检查目标元素是否存在
+                  const targetElement = document.querySelector('body');
                   if (targetElement) {
                     const badge = createBadge();
                   } else {
-                    // 濡傛灉杩樻病鏈夋壘鍒帮紝绛夊緟涓€娈垫椂闂村啀璇?                    setTimeout(() => {
+                    // 如果还没有找到，等待一段时间再试
+                    setTimeout(() => {
                       const badge = createBadge();
                     }, 500);
                   }
@@ -342,7 +334,7 @@
               if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initBadge);
               } else {
-                // DOM 宸茬粡鍔犺浇瀹屾垚锛屼絾 React 鍙兘杩樻病娓叉煋
+                // DOM 已经加载完成，但 React 可能还没渲染
                 initBadge();
               }
               
